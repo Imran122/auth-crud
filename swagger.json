@@ -1,0 +1,399 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0.0",
+    "title": "Swagger-nagair-system",
+    "description": "Swagger Api Docs For Nag Air.",
+    "contact": {
+      "email": ""
+    }
+  },
+  "schemes": ["http", "https"],
+  "paths": {
+    "/api/signup": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "user registration",
+        "description": "it is signup form where you will send role,name,email,password, by a form in body as json format. .. API accepting form data by `req.body`. ",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "user information",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "karmaker"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "imran122.office@gmail.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "12345678"
+                },
+                "role": {
+                  "type": "string",
+                  "example": "admin"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/signin": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "user signin",
+        "description": "it is signin form where you will send  `email`,`pasword`, from   body as json.. API accepting form data by `req.body`.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "user information for signin.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "admin@gmail.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "12345678"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/forgot-password-sys-to-sent-email": {
+      "put": {
+        "tags": ["Auth"],
+        "summary": "change password by click forgot password",
+        "description": "this api will receive `email` from body and send a link to the email. by click this link you can change the password. ",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "user information for change password.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "imran122.office@gmail.com"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/update-password": {
+      "put": {
+        "tags": ["Auth"],
+        "summary": "change password by click tthe link",
+        "description": "this api will receive `email` `password` and `token` from body and update the password. token you will take from the link by react useParams . you will click the link from the mail and the token you will get in the link. password filed will be new password data. email will be the user who want to change password. ",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "user information for change password.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "admin@gmail.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "12345600imran"
+                },
+                "token": {
+                  "type": "string",
+                  "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NDdkNjkxYjVkZWYzNTZjNDEwZDY0MzIiLCJpYXQiOjE2ODU5NDM4NDksImV4cCI6MTY4NjU0ODY0OX0.9R5e7xNw5nQFge5tptc2XwjyBCJ3680TZlz9wQUWZfM"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/admin-create-user": {
+      "post": {
+        "tags": ["Admin"],
+        "summary": "user registration",
+        "description": "it is admin-create-user api where  you will send role,name,email,password, by a form in body as json format. .. API accepting form data by `req.body`. ",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "user information",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "example": "karmaker"
+                },
+                "email": {
+                  "type": "string",
+                  "example": "imran122.office@gmail.com"
+                },
+                "password": {
+                  "type": "string",
+                  "example": "12345678"
+                },
+                "role": {
+                  "type": "string",
+                  "example": "user"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/api/user-update": {
+      "patch": {
+        "tags": ["Admin"],
+        "summary": "user profile update",
+        "description": "it is user update api ,you will send data  from   body as json.. API accepting form data by `req.body`. `_id` also you will send by the body",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "Authorization",
+            "description": "Access Token",
+            "required": true
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "user information for update profile.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "example": "647d62fb518d913a389513ef"
+                },
+                "name": {
+                  "type": "string",
+                  "example": "kuddus"
+                },
+
+                "email": {
+                  "type": "string",
+                  "example": "jakir@gmail.com"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/user-details?id=id": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "Get details of a user",
+        "description": "This API will provide details of a user by sending the user ID as a query parameter.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "Authorization",
+            "description": "Access Token",
+            "required": true
+          },
+          {
+            "in": "query",
+            "type": "string",
+            "name": "id",
+            "description": "The ID of the user to retrieve details for. Example: 647d691b5def356c410d6432",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+
+    "/api/user-list": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "get all user from db",
+        "description": "this api will provide all user data list. ",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "Authorization",
+            "description": "Access Token",
+            "required": true
+          },
+          {
+            "in": "query",
+            "type": "string",
+            "name": "id",
+            "description": "647d62fb518d913a389513ef",
+
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/user-delete?id=id": {
+      "get": {
+        "tags": ["Admin"],
+        "summary": "get all user from db",
+        "description": "this api will delete user . you will send id as query parameter ",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "header",
+            "type": "string",
+            "name": "Authorization",
+            "description": "Access Token",
+            "required": true
+          },
+          {
+            "in": "query",
+            "type": "string",
+            "name": "id",
+            "description": "The ID of the user to retrieve details for. Example: 647d691b5def356c410d6432",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  }
+}
