@@ -14,7 +14,7 @@ $ npm install
 $ npm run start-dev
 ```
 
-## Installation
+## API Documentation
  Check swagger api documentation to check the api..<br>
 ```
 http://localhost:5001/api-docs/
