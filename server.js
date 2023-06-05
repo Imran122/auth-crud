@@ -6,7 +6,7 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 const session = require("express-session");
 const app = express();
-
+app.use(express.json());
 // connect to db
 mongoose
   .connect(process.env.DATABASE, {

@@ -101,7 +101,7 @@
       }
     },
     "/api/forgot-password-sys-to-sent-email": {
-      "put": {
+      "post": {
         "tags": ["Auth"],
         "summary": "change password by click forgot password",
         "description": "this api will receive `email` from body and send a link to the email. by click this link you can change the password. ",

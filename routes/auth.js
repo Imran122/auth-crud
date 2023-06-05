@@ -20,6 +20,6 @@ const { runValidation } = require("../validators");
 router.post("/signup", userSignupValidator, runValidation, signup);
 router.post("/signin", userSigninValidator, runValidation, signin);
 
-router.put("/forgot-password-sys-to-sent-email", forgotPasswordSentLinkToEmail);
+router.post("/forgot-password-sys-to-sent-email", forgotPasswordSentLinkToEmail);
 router.put("/update-password", updatePassword);
 module.exports = router;

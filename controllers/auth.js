@@ -1,41 +1,35 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
-const { json } = require("body-parser");
-
-exports.signup = (req, res) => {
+const { v4: uuid } = require('uuid');
+const nodemailer = require('nodemailer');
+exports.signup = async (req, res) => {
   const { name, email, password, role } = req.body;
-  //const profile = req.files.profileImage;
-
-  //console.log("file", profile);
-
-  //const encodeedPic = picData.toString("base64");
-  //const profileImage = Buffer.from(encodeedPic, "base64");
-  //console.log(profileImage);
 
   try {
-    User.findOne({ email }).exec((err, user) => {
-      if (user) {
-        return res.status(400).json({
-          error: "Email is taken",
-        });
-      } else {
-        let newUser = new User({
-          name,
-          role,
-          email,
-          password,
-        });
+    const user = await User.findOne({ email }).exec();
+    if (user) {
+      return res.status(400).json({
+        error: "Email is taken",
+      });
+    }
 
-        newUser.save();
-        res.json({
-          message: "Signup success! Please signin",
-        });
-      }
+    const newUser = new User({
+      name,
+      role,
+      email,
+      password,
+    });
+
+    await newUser.save();
+
+    res.json({
+      message: "Signup success! Please signin",
     });
   } catch (error) {
     return res.status(400).json(error);
   }
 };
+
 
 exports.signin = (req, res) => {
   const { email, password } = req.body;
@@ -103,34 +97,39 @@ exports.signin = (req, res) => {
 exports.forgotPasswordSentLinkToEmail = async (req, res) => {
   try {
     const email = req.body.email;
-    const token = uuid.v4();
-    console.log(email);
+    const token = uuid();
+
     let transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 587,
       secure: false,
       auth: {
-        user: "itechverser@gmail.com",
-        pass: "ihbjuqfkwjqqbhny",
+        user: "itechverser22@gmail.com",
+        pass: "utypznwxwgxzzbkv",
       },
     });
-    let mailOptions = {
-      from: "itechverser@gmail.com", // sender address
-      to: email, // list of receivers
 
-      subject: "Password reset", // Subject line
-      text: "Hello,\n\nPlease click the following link to reset your password:", // plain text body
-      html: `<p>Hello,</p><p>Please click the following link to reset your password:</p><a href=${process.env.CLIENT_URL}/change-password?token=${token}>${process.env.CLIENT_URL}/change-password?token=${token}</a>`, // html body
+    let mailOptions = {
+      from: "itechverser22@gmail.com",
+      to: email,
+      subject: "Password reset",
+      text: "Hello,\n\nPlease click the following link to reset your password:",
+      html: `<p>Hello,</p><p>Please click the following link to reset your password:</p><a href=${process.env.CLIENT_URL}/change-password?token=${token}>${process.env.CLIENT_URL}/change-password?token=${token}</a>`,
     };
-    // send mail with defined transport object
-    await transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        return console.log(error);
-      }
-      return res.json({ message: `Message sent to ${email} ` });
+
+    await new Promise((resolve, reject) => {
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve();
+        }
+      });
     });
+
+    res.json({ message: `Message sent to ${email}` });
   } catch (error) {
-    res.json({ message: error });
+    res.json({ message: error.message });
   }
 };
 
