@@ -23,6 +23,14 @@ const userScheama = new mongoose.Schema(
       unique: true,
       lowercase: true,
     },
+    verified: {
+      type: Boolean,
+      default: false,
+    },
+    verificationCode: {
+      type: String,
+      trim: true,
+    },
 
     hashed_password: {
       type: String,

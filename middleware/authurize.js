@@ -18,7 +18,17 @@ exports.authenticate = async (req, res, next) => {
 
   try {
     const vrfy = jwt.verify(token, process.env.JWT_SECRET);
-    console.log('Ver', vrfy);
+    
+    const user = await User.findById(vrfy._id).exec();
+
+
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found!' });
+    }
+
+    if (!user.verified) {
+      return res.status(401).json({ msg: 'User is not verified. Please verify your email' });
+    }
     req.ID = vrfy._id;
     next();
   } catch (err) {

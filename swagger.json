@@ -14,7 +14,7 @@
       "post": {
         "tags": ["Auth"],
         "summary": "user registration",
-        "description": "it is signup form where you will send role,name,email,password, by a form in body as json format. .. API accepting form data by `req.body`. ",
+        "description": "it is signup form where you will send role,name,email,password, by a form in body as json format. .. API accepting form data by `req.body`. It will give the verification code in return, and save the code in data. copy the code for verification ",
         "consumes": ["application/json"],
         "produces": ["application/json"],
         "parameters": [
@@ -41,6 +41,47 @@
                 "role": {
                   "type": "string",
                   "example": "admin"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/verify-code": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "user verification",
+        "description": "it is  verification api and make `verified` true if it is match with the code.   send data `email`, `verificationCode` as json from body.",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "user information forverification",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "example": "admin@gmail.com"
+                },
+                "verificationCode": {
+                  "type": "string",
+                  "example": "BB5678"
                 }
               }
             }
@@ -140,8 +181,8 @@
     "/api/update-password": {
       "put": {
         "tags": ["Auth"],
-        "summary": "change password by click tthe link",
-        "description": "this api will receive `email` `password` and `token` from body and update the password. token you will take from the link by react useParams . you will click the link from the mail and the token you will get in the link. password filed will be new password data. email will be the user who want to change password. ",
+        "summary": "change password by api",
+        "description": "this api will receive `email` `password` and `token` from body and update the password.token is that token what we are saving in cookies. email will be the user who want to change password. ",
         "consumes": ["application/json"],
         "produces": ["application/json"],
         "parameters": [
@@ -184,7 +225,7 @@
     },
     "/api/admin-create-user": {
       "post": {
-        "tags": ["Admin"],
+        "tags": ["Auth"],
         "summary": "user registration",
         "description": "it is admin-create-user api where  you will send role,name,email,password, by a form in body as json format. .. API accepting form data by `req.body`. ",
         "consumes": ["application/json"],
@@ -234,7 +275,7 @@
 
     "/api/user-update": {
       "patch": {
-        "tags": ["Admin"],
+        "tags": ["Auth"],
         "summary": "user profile update",
         "description": "it is user update api ,you will send data  from   body as json.. API accepting form data by `req.body`. `_id` also you will send by the body",
         "consumes": ["application/json"],
@@ -287,7 +328,7 @@
     },
     "/api/user-details?id=id": {
       "get": {
-        "tags": ["Admin"],
+        "tags": ["Auth"],
         "summary": "Get details of a user",
         "description": "This API will provide details of a user by sending the user ID as a query parameter.",
         "consumes": ["application/json"],
@@ -324,7 +365,7 @@
 
     "/api/user-list": {
       "get": {
-        "tags": ["Admin"],
+        "tags": ["Auth"],
         "summary": "get all user from db",
         "description": "this api will provide all user data list. ",
         "consumes": ["application/json"],
@@ -361,7 +402,7 @@
     },
     "/api/user-delete?id=id": {
       "get": {
-        "tags": ["Admin"],
+        "tags": ["Auth"],
         "summary": "get all user from db",
         "description": "this api will delete user . you will send id as query parameter ",
         "consumes": ["application/json"],

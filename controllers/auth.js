@@ -2,6 +2,8 @@ const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const { v4: uuid } = require('uuid');
 const nodemailer = require('nodemailer');
+const crypto = require('crypto');
+
 exports.signup = async (req, res) => {
   const { name, email, password, role } = req.body;
 
@@ -13,22 +15,66 @@ exports.signup = async (req, res) => {
       });
     }
 
+    const verificationCode = crypto.randomBytes(3).toString('hex').toUpperCase();
+
     const newUser = new User({
       name,
       role,
       email,
       password,
+      verificationCode,
     });
 
     await newUser.save();
 
     res.json({
-      message: "Signup success! Please signin",
+      message: "Signup success! Please verify your email with the verification code",
+      verificationCode,
     });
   } catch (error) {
     return res.status(400).json(error);
   }
 };
+
+
+
+
+//verify code
+exports.verifyCode = async (req, res) => {
+  const { email, verificationCode } = req.body;
+
+  try {
+    const user = await User.findOne({ email }).exec();
+    if (!user) {
+      return res.status(404).json({
+        error: "User not found",
+      });
+    }
+
+    if (user.verified) {
+      return res.status(400).json({
+        error: "User is already verified",
+      });
+    }
+
+    if (user.verificationCode !== verificationCode) {
+      return res.status(400).json({
+        error: "Invalid verification code",
+      });
+    }
+
+    user.verified = true;
+    user.verificationCode = null;
+    await user.save();
+
+    res.json({
+      message: "Verification successful. You can now login.",
+    });
+  } catch (error) {
+    return res.status(400).json(error);
+  }
+};
+
 
 
 exports.signin = (req, res) => {
@@ -49,7 +95,12 @@ exports.signin = (req, res) => {
         error: "Email and password do not match",
       });
     }
-
+  // Check if the user is verified
+  if (!user.verified) {
+    return res.status(400).json({
+      error: "User is not verified. Please verify after signup",
+    });
+  }
     if (
       user.role === "admin" ||
       user.role === "support" ||
@@ -72,7 +123,7 @@ exports.signin = (req, res) => {
       res.cookie("token", token, {
         httpOnly: true,
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
-        secure: process.env.NODE_ENV === "production", // Set "secure" option based on the environment
+        
       });
 
       // Return the user details and token

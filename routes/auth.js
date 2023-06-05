@@ -5,7 +5,7 @@ const router = express.Router();
 const {
   signup,
   signin,
-
+  verifyCode,
   forgotPasswordSentLinkToEmail,
   updatePassword,
 } = require("../controllers/auth");
@@ -22,4 +22,5 @@ router.post("/signin", userSigninValidator, runValidation, signin);
 
 router.post("/forgot-password-sys-to-sent-email", forgotPasswordSentLinkToEmail);
 router.put("/update-password", updatePassword);
+router.post('/verify-code', verifyCode);
 module.exports = router;
